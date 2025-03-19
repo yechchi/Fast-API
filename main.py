@@ -18,12 +18,12 @@ users_db = [
     }
 ]
 
-api = FastAPI()
+api = FastAPI(title = "My API", description="First API with FastAPI", version="1.0.1")
 
-@api.get('/')
+@api.get('/', name = "Hello world")
 def get_index():
-    return 
-{'greeting':'welcome'}
+    """ Returns greetings """
+    return {'greeting':'welcome'}
 
 @api.get('/users')
 def get_users():
@@ -53,3 +53,23 @@ def get_user_suscription(userid):
         return {'subscription': user['subscription']}
     except IndexError:
         return {}
+
+
+from pydantic import BaseModel
+from typing import Optional
+
+class Computer(BaseModel):
+    """a computer that is available in the store
+    """
+    computerid: int
+    cpu: Optional[str]
+    gpu: Optional[str]
+    price: float
+
+
+@api.put('/computer', name='Create a new computer')
+def get_computer(computer: Computer):
+    """Creates a new computer within the database
+    """
+    return computer
+
